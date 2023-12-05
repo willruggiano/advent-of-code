@@ -4,3 +4,7 @@
 
 ### nix
 /result
+
+### typescript
+/bun.lockb
+/node_modules/
