@@ -1,10 +1,7 @@
 const uuid = () => crypto.randomUUID();
-const input = await Bun.file("../input.example.txt")
+const input = await Bun.file("../input.txt")
 	.text()
 	.then((t) => t.split("\n"));
-
-const Sym = Symbol("*");
-type Sym = typeof Sym;
 
 const Empty = Symbol(".");
 type Empty = typeof Empty;
@@ -63,10 +60,10 @@ for (const line of input) {
 }
 
 const n = input[0].length;
-const s = new Set<number>();
+const s = new Set<string>();
 let sum = 0;
-for (const { id, type, col, row, val } of schematic) {
-	if (type === "n" && !s.has(id)) {
+for (const { type, col, row, val } of schematic) {
+	if (type === "s" && val === "*") {
 		const ds = [];
 		if (col > 0) {
 			// west
@@ -95,13 +92,18 @@ for (const { id, type, col, row, val } of schematic) {
 		// south
 		ds.push([row + 1, col]);
 
-		for (const d of ds) {
+		const neighbors = ds.flatMap((d) => {
 			const neighbor = schematic.at(d[0] * n + d[1]);
-			if (neighbor?.type === "s") {
-				s.add(id);
-				sum += val;
-				break;
+			if (neighbor && neighbor.type === "n" && !s.has(neighbor.id)) {
+        s.add(neighbor.id);
+				return [neighbor];
 			}
+
+			return [];
+		});
+
+		if (neighbors.length === 2) {
+			sum += neighbors[0].val * neighbors[1].val;
 		}
 	}
 }
