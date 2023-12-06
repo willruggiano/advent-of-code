@@ -23,11 +23,17 @@ const m: Record<string, number> = {
 };
 
 const sum = input.split("\n").reduce((acc, line) => {
-	const matches = line.match(p);
-	if (!matches) {
+	let r: RegExpExecArray | null = null;
+	const matches = [];
+	// biome-ignore lint/suspicious/noAssignInExpressions: we know
+	while ((r = p.exec(line))) {
+		matches.push(r[0]);
+		p.lastIndex = r.index + 1;
+	}
+	if (matches.length === 0) {
 		return acc;
 	}
-	return acc + +`${m[matches[0]]}${m[matches[matches.length - 1]]}`;
+	return acc + m[matches[0]] * 10 + m[matches[matches.length - 1]];
 }, 0);
 
 console.log(sum);
