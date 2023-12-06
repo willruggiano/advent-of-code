@@ -2,6 +2,9 @@
 /.envrc
 /.direnv/
 
+### haskell
+dist-newstyle/
+
 ### nix
 /result
 

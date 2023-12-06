@@ -14,6 +14,7 @@
       buildInputs = with pkgs; [
         biome
         bun
+        (haskellPackages.ghcWithPackages (ps: with ps; [cabal-install haskell-language-server]))
       ];
     };
   };
