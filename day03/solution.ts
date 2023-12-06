@@ -1,5 +1,5 @@
 const uuid = () => crypto.randomUUID();
-const input = await Bun.file("../input.txt")
+const input = await Bun.file("input.txt")
 	.text()
 	.then((t) => t.split("\n"));
 
